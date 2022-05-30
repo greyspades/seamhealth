@@ -1,0 +1,167 @@
+<div class="grid justify-center mt-[50px]">
+    <div class="bg-white rounded-md shadow-xl md:w-[950px] p-4 h-[400px]">
+        <h2 class="text-xl font-bold text-black">
+            Register New Doctor
+        </h2>
+        <form  [formGroup]="registerForm" (submit)="this.onSubmit()" >
+            <div class="grid grid-cols-3 gap-5 justify-items-center">
+                <div class="mt-[20px]">
+                    <label class="block ml-1">
+                        Name
+                    </label>
+                    <input
+                    [style.border]="name?.errors?.['pattern'] ? '2px solid red':'2px solid rgb(148 163 184)'"
+                    class="bg-slate-200 px-3 h-[40px] w-[250px] rounded-lg "
+                    type="text"
+                    placeholder="Name"
+                    formControlName="name"
+                    />
+                    <div class="text-red-500" *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+                        <small *ngIf="name?.errors?.['required']">
+                            Name is required.
+                          </small>
+                          <small *ngIf="name?.errors?.['minlength']">
+                            Name must be at least 4 characters long.
+                          </small>
+                          
+                    </div>
+                </div>
+    
+                <!-- username field -->
+                <div class="mt-[20px]">
+                    <label class="block ml-1">
+                        Username
+                    </label>
+                    <input
+                    [style.border]="username?.errors?.['pattern'] ? '2px solid red':'2px solid rgb(148 163 184)'"
+                    class="bg-slate-200 px-3 h-[40px] w-[250px] rounded-lg"
+                    type="text"
+                    placeholder="Username"
+                    formControlName="username"
+    
+                    />
+
+                    <div class="text-red-500" *ngIf="username?.invalid && (username?.dirty || username?.touched)">
+                        <small *ngIf="username?.errors?.['required']">
+                            Username is required.
+                          </small>
+                          <small *ngIf="username?.errors?.['minlength']">
+                            Must be at least 4 characters long.
+                          </small>
+                          
+                    </div>
+                </div>
+    
+                <!-- email field -->
+                <div class="mt-[20px]">
+                    <label class="block ml-1">
+                        Email
+                    </label>
+                    <input
+                    [style.border]="email?.errors?.['pattern'] ? '2px solid red':'2px solid rgb(148 163 184)'"
+                    class="bg-slate-200 px-3 h-[40px] w-[250px] rounded-lg"
+                    type="email"
+                    placeholder="Email"
+                    formControlName="email"
+    
+                    />
+
+                    <div *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+                        <small class="text-red-500" *ngIf="email?.errors?.['required']">
+                            Email is required.
+                        </small>
+                          <small class="text-red-500" *ngIf="email?.errors?.['pattern']">
+                            Not a valid Email.
+                          </small>
+                          
+                    </div>
+                </div>
+    
+                <!-- phone field -->
+                <div class="mt-[20px]">
+                    <label class="block ml-1">
+                        Phone
+                    </label>
+                    <input
+                    [style.border]="phone?.errors?.['pattern'] ? '2px solid red':'2px solid rgb(148 163 184)'"
+                    class="bg-slate-200 px-3 h-[40px] w-[250px] rounded-lg"
+                    type="text"
+                    placeholder="Phone"
+                    formControlName="phone"
+                    (keypress)="this.numericOnly($event)"
+    
+                    />
+
+                    <div class="text-red-500" *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)">
+                        <small *ngIf="phone?.errors?.['required']">
+                            Phone number is required.
+                          </small>
+                          <small *ngIf="phone?.errors?.['minlength']">
+                            Must be at least 11 digits long.
+                          </small>
+                          <small *ngIf="phone?.errors?.['maxlength']">
+                            Must not be more than 13 digits long.
+                          </small>
+                          
+                    </div>
+                </div>
+    
+                <!-- city field -->
+                <div class="mt-[20px]">
+                    <label class="block ml-1">
+                        City
+                    </label>
+                    <input
+                    [style.border]="city?.errors?.['pattern'] ? '2px solid red':'2px solid rgb(148 163 184)'"
+                    class="bg-slate-200 px-3 h-[40px] w-[250px] rounded-lg"
+                    type="text"
+                    placeholder="City"
+                    formControlName="city"
+    
+                    />
+                    <div class="text-red-500" *ngIf="city?.invalid && (city?.dirty || city?.touched)">
+                        <small *ngIf="city?.errors?.['required']">
+                            City is required.
+                          </small>
+                          <small *ngIf="city?.errors?.['minlength']">
+                            Must be at least 3 characters long.
+                          </small>
+                          
+                    </div>
+                </div>
+    
+                <div class="mt-[20px]">
+                    <label class="block ml-1">
+                        Website
+                    </label>
+                    <input
+                    [style.border]="website?.errors?.['pattern'] ? '2px solid red':'2px solid rgb(148 163 184)'"
+                    class="bg-slate-200 px-3 h-[40px] w-[250px] rounded-lg"
+                    type="text"
+                    placeholder="Website"
+                    formControlName="website"
+    
+                    />
+                    <div class="text-red-500" *ngIf="website?.invalid && (website?.dirty || website?.touched)">
+                        <small *ngIf="website?.errors?.['required']">
+                            Website is required.
+                          </small>
+                          <small *ngIf="city?.errors?.['minlength']">
+                            Must be at least 4 characters long.
+                          </small>
+                          
+                    </div>
+                </div>
+            </div>
+            <div class="grid justify-end mt-[30px] p-5">
+                <button type="submit" [disabled]="!registerForm.valid"
+                [style.background-color]="registerForm.valid ? 'rgb(51 65 85)' : 'rgb(161 161 170)'"
+                class="h-[40px] text-white w-[150px] rounded-lg">
+                    Register
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-doctors></app-doctors>

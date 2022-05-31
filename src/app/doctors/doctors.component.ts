@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DoctorsService } from '../doctors.service';
+import { Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 export interface PeriodicElement {
   name: string;
@@ -10,53 +11,61 @@ export interface PeriodicElement {
   symbol: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
-
-
 @Component({
   selector: 'app-doctors',
   templateUrl: './doctors.component.html',
   styleUrls: ['./doctors.component.css']
 })
-export class DoctorsComponent implements OnInit {
+export class DoctorsComponent implements OnInit, OnDestroy {
 
+  //* columns for the table
   displayedColumns: string[] = ['id', 'name', 'username', 'email', 'phone number', 'city', 'website'];
 
-  doctorsData=[]
+  //* holds the data for all doctors
+  doctorsData:any[]=[]
 
-  dataSource = new MatTableDataSource(this.doctorsData);
+  //* holder for the subscription in the doctors service
+  subscription?: Subscription;
 
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
 
   constructor(
-    private doctors:DoctorsService
+    private data:DoctorsService
   ) { }
 
+  //* calls and subscribes to the getDoctors method in the doctors service
   getItems():void {
-    this.doctors.getDoctors()
+    this.data.getDoctors()
     .subscribe((res)=>{
       console.log(res)
       this.doctorsData=res
     })
   }
 
+  //* holds the item being searched
+  searchItem = new FormControl('')
+
+  handleFilter = () => {
+    return this.doctorsData
+      .filter((element) => {
+        if (this.searchItem.value.name !== "" || this.searchItem.value.username) {
+          return element?.name?.toLowerCase()?.includes(this.searchItem?.value?.toLowerCase()) ||
+          element?.username?.toLowerCase()?.includes(this.searchItem?.value?.toLowerCase())
+        }
+        return element
+      })
+  }
+
+  //* when the app initializes fetch all doctors
   ngOnInit(): void {
-    this.getItems()
+     this.getItems()
+    this.subscription = this.data.additionalDoctor.subscribe(item =>{
+      console.log(item)
+      this.doctorsData.push(item)
+    })
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
   }
 
 }

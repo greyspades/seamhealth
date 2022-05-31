@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, Validator, Validators  } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validator, Validators, ValidatorFn  } from '@angular/forms';
+import { DoctorsService } from '../doctors.service';
 
 @Component({
   selector: 'app-register',
@@ -9,23 +10,16 @@ import { FormControl, FormBuilder, FormGroup, Validator, Validators  } from '@an
 export class RegisterComponent implements OnInit {
 
   constructor(
-    private form:FormBuilder 
+    private form:FormBuilder,
+    private data:DoctorsService
   ) { }
 
   ngOnInit(): void {
 
   }
 
-  // registerForm = this.form.group({
-  //   name: '',
-  //   mail: '',
-  //   username:'',
-  //   phone:'',
-  //   city:'',
-  //   website:''
-  // });
 
-//* initialize form control handlers for each field
+//* initialize form control handlers for each field in a form group and validates al fields
 registerForm=new FormGroup({
   name: new FormControl('',[
     Validators.required,
@@ -55,6 +49,7 @@ registerForm=new FormGroup({
   ),
 })
 
+//* ensures only numbers are inputed into the phone field
 numericOnly(event:any): boolean {    
   let patt = /^([0-9])$/;
   let result = patt.test(event.key);
@@ -75,10 +70,10 @@ get city() { return this.registerForm.get('city'); }
 get website() { return this.registerForm.get('website'); }
 
 
-
+//* submits the form data 
 onSubmit() {
-  // TODO: Use EventEmitter with form value
-  console.warn(this.registerForm.value);
+  this.data.addDoctor(this.registerForm.value)
+  this.registerForm.reset()
 }
   
 

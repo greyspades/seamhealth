@@ -7,7 +7,6 @@ import { RegisterComponent } from './register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatTableModule} from '@angular/material/table';
 import { DoctorsComponent } from './doctors/doctors.component'; 
 
 
@@ -25,7 +24,7 @@ import { DoctorsComponent } from './doctors/doctors.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    MatTableModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
